@@ -28,7 +28,20 @@ class catUnidadeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validate = catUnidade::where("Codigo", $request->Codigo)
+            ->where("Descripcion", $request->Descripcion)
+            ->count();
+        if ($validate == 0) {
+            $unidad = new catUnidade;
+            $unidad->Codigo = $request->Codigo;
+            $unidad->Descripcion = $request->Descripcion;
+
+            $conf = $unidad->save();
+        } else {
+            $conf  = false;
+        }
+
+        return response()->json($conf);
     }
 
     /**

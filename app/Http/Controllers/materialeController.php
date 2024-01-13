@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\catFamilia;
+use App\Models\catUnidade;
 use App\Models\materiale;
 use Illuminate\Http\Request;
 
@@ -13,7 +15,7 @@ class materialeController extends Controller
     public function index()
     {
         $materiales = materiale::get();
-        
+        return response()->json($materiales);
     }
 
     /**
@@ -21,7 +23,12 @@ class materialeController extends Controller
      */
     public function create()
     {
-        //
+        $catalogos = [
+            "unidades" => catUnidade::get(),
+            "familys" => catFamilia::get()
+        ];
+
+        return response()->json($catalogos);
     }
 
     /**
@@ -29,7 +36,29 @@ class materialeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $code = uniqid();
+
+        $validate = materiale::where("Descripcion", $request->Descripcion)
+            ->where("Unidad", $request->Unidad)
+            ->where("Familia", $request->Familia)
+            ->where("Costo_Unitario", $request->Costo_Unitario)
+            ->count();
+
+        if ($validate  == 0) {
+            $material =  new materiale;
+            $material->Codigo = $code;
+            $material->Descripcion = $request->Descripcion;
+            $material->Unidad = $request->Unidad;
+            $material->Familia = $request->Familia;
+            $material->Costo_Unitario = $request->Costo_Unitario;
+            $material->Ultimo_Costo = $request->Ultimo_Costo;
+
+            $conf = $material->save();
+        } else {
+            $conf  = false;
+        }
+
+        return response()->json($conf);
     }
 
     /**
@@ -61,6 +90,7 @@ class materialeController extends Controller
      */
     public function destroy(materiale $materiale)
     {
-        //
+        $conf = $materiale->delete();
+        return response()->json($conf);
     }
 }

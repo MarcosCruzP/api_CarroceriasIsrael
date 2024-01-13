@@ -28,7 +28,20 @@ class catFamiliaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validate = catFamilia::where("Codigo", $request->Codigo)
+            ->where("Descripcion", $request->Descripcion)
+            ->count();
+        if ($validate == 0) {
+            $familia = new catFamilia;
+            $familia->Codigo = $request->Codigo;
+            $familia->Descripcion = $request->Descripcion;
+
+            $conf = $familia->save();
+        } else {
+            $conf  = false;
+        }
+
+        return response()->json($conf);
     }
 
     /**

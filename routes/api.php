@@ -3,6 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\catFamiliaController;
+use App\Http\Controllers\catUnidadeController;
+use App\Http\Controllers\materialeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,3 +25,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('user/reg', [UserController::class, 'store']);
 
 Route::resource('materials', materialeController::class);
+
+/// Catalogos
+Route::resource('Unidades', catUnidadeController::class);
+Route::resource('Familia', catFamiliaController::class);
