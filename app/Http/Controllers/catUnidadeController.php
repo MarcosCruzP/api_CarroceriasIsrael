@@ -57,15 +57,19 @@ class catUnidadeController extends Controller
      */
     public function edit(catUnidade $catUnidade)
     {
-        //
+      
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, catUnidade $catUnidade)
+    public function update(Request $request, int $catUnidade)
     {
-        //
+        $unidad = catUnidade::find($catUnidade);
+        $unidad->Descripcion = $request->Descripcion;
+        $conf =  $unidad->save();
+
+        return response()->json($conf);
     }
 
     /**

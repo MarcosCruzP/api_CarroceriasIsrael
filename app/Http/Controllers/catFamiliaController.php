@@ -65,7 +65,11 @@ class catFamiliaController extends Controller
      */
     public function update(Request $request, catFamilia $catFamilia)
     {
-        //
+        $familia = catFamilia::find($catUnidade);
+        $familia->Descripcion = $request->Descripcion;
+        $conf =  $familia->save();
+
+        return response()->json($conf);
     }
 
     /**
@@ -73,6 +77,7 @@ class catFamiliaController extends Controller
      */
     public function destroy(catFamilia $catFamilia)
     {
-        //
+        // $conf = $materiale->delete();
+        // return response()->json($conf);
     }
 }
